@@ -10,7 +10,7 @@ class MainLayout extends React.Component {
             <Layout>
                 <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}/>
                 <Content style={{ padding: '0 50px', marginTop: 64 }}>
-                    <div style={{ background: '#fff', padding: 24, minHeight: 680, marginTop: 38 }}>
+                    <div style={{ background: '#fff', padding: 0, height: 690, marginTop: 38 }}>
                         {this.props.children}
                     </div>
                 </Content>

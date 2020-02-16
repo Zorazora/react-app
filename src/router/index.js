@@ -7,6 +7,9 @@ import {HashRouter, Route, Switch, Redirect} from 'react-router-dom';
 const RouterConfig = () => (
     <HashRouter>
         <Switch>
+            <Route path='/' exact render={()=>(
+                <Redirect to='/home'/>
+            )}/>
             <Route path='/' render={()=>
                 <MainLayout>
                     <Route exact path='/home' component={App}/>

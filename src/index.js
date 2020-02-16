@@ -5,7 +5,6 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import RouterConfig from "./router/index";
 
-console.log(document.getElementById('root'))
 ReactDOM.render(<RouterConfig/>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
