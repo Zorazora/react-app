@@ -1,5 +1,7 @@
 import App from '../pages/App';
 import Main from '../pages/Main';
+import Login from '../pages/login/Login';
+import Register from '../pages/login/Register'
 import MainLayout from '../component/MainLayout'
 import React from 'react';
 import {HashRouter, Route, Switch, Redirect} from 'react-router-dom';
@@ -8,14 +10,16 @@ const RouterConfig = () => (
     <HashRouter>
         <Switch>
             <Route path='/' exact render={()=>(
-                <Redirect to='/home'/>
+                <Redirect to='/arcan'/>
             )}/>
-            <Route path='/' render={()=>
+            <Route path='/arcan' render={()=>
                 <MainLayout>
-                    <Route exact path='/home' component={App}/>
-                    <Route exact path='/main' component={Main}/>
+                    <Route exact path='/arcan' component={App}/>
+                    <Route exact path='/arcan/main' component={Main}/>
+                    <Route exact path='/arcan/register' component={Register}/>
                 </MainLayout>
             }/>
+            <Route exact path='/login' component={Login}/>
         </Switch>
     </HashRouter>
 )

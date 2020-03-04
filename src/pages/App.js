@@ -20,7 +20,7 @@ class App extends React.Component {
     }
 
     handleClickBtn() {
-        this.props.history.push('/main')
+        this.props.history.push('/arcan/main')
     }
 
     render() {

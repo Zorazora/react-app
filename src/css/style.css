@@ -1,0 +1,23 @@
+.register-header {
+    text-align: center;
+    margin-top: 10%;
+}
+.register-button {
+    width: 100%;
+    margin-top: 10px;
+}
+.login-header {
+    text-align: center;
+    margin-top: 10%;
+}
+.login-card {
+    width: 100%;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+.login-footer-card {
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 5px;
+    text-align: center;
+}
