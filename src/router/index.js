@@ -1,8 +1,9 @@
 import App from '../pages/App';
 import Main from '../pages/Main';
 import Login from '../pages/login/Login';
-import Register from '../pages/login/Register'
-import MainLayout from '../component/MainLayout'
+import Register from '../pages/login/Register';
+import Activate from '../pages/login/Activate';
+import MainLayout from '../component/MainLayout';
 import React from 'react';
 import {HashRouter, Route, Switch, Redirect} from 'react-router-dom';
 
@@ -20,6 +21,7 @@ const RouterConfig = () => (
                 </MainLayout>
             }/>
             <Route exact path='/login' component={Login}/>
+            <Route exact path='/activate/:id' component={Activate}/>
         </Switch>
     </HashRouter>
 )

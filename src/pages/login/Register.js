@@ -1,6 +1,7 @@
 import React from 'react';
-import {Form, Input, Button, Col, Typography} from 'antd';
-import '../../css/style.css'
+import {Form, Input, Button, Col, Typography, notification, message} from 'antd';
+import '../../css/style.css';
+import {register} from '../../api/user'
 
 class RegistrationForm extends React.Component {
     state = {
@@ -12,6 +13,23 @@ class RegistrationForm extends React.Component {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                let registerInfo = {};
+                registerInfo.username = values.username;
+                registerInfo.mailaddress = values.mailaddress;
+                registerInfo.password = this.$md5(values.password);
+                register(registerInfo).then(res => {
+                    console.log(res);
+                    if(res.data.data === 'SUCCESS') {
+                        notification['success']({
+                            message: 'Having sent verification email',
+                            description: 'Please check your email to verify your account.'
+                        });
+                        this.props.history.push('/arcan');
+                    }else if(res.data.data === 'FAIL_MAILEXIST') {
+                        message.error('This mail has existed!');
+                        this.props.form.resetFields();
+                    }
+                })
             }
         });
     };

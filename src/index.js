@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-//import RouterConfig from './router/index'
 import * as serviceWorker from './serviceWorker';
 import RouterConfig from "./router/index";
+import md5 from "js-md5";
+
+React.Component.prototype.$md5 = md5;
 
 ReactDOM.render(<RouterConfig/>, document.getElementById('root'));
 
