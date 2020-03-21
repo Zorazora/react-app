@@ -10,14 +10,19 @@
     "antd": "^3.26.8",
     "babel-plugin-import": "^1.13.0",
     "customize-cra": "^0.9.1",
+    "history": "^4.10.1",
     "js-md5": "^0.7.3",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "react": "^16.12.0",
     "react-app-rewired": "^2.1.5",
     "react-dom": "^16.12.0",
+    "react-redux": "^5.0.5",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.3.0",
+    "redux": "^4.0.5",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0",
     "typescript": "^3.7.4"
   },
   "scripts": {
@@ -45,5 +50,5 @@
     "axios": "^0.19.2",
     "webpack": "^4.41.2"
   },
-  "proxy": "http://localhost:8081"
+  "proxy": "http://localhost:8088"
 }

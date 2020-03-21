@@ -1,10 +1,12 @@
 import React from 'react';
 import '../../css/style.css';
 import Logo from '../../images/arcan-logo.png';
-import {Typography, Card, Col, Form, Input, Button, Alert, message} from 'antd';
+import {Typography, Card, Col, Form, Input, Button, Alert, message, Spin} from 'antd';
 import {Link} from 'react-router-dom';
 import {signIn, resendMail} from "../../api/user";
 import {notification} from "antd/lib/index";
+import {connect} from 'react-redux';
+import {userActions} from "../../store/action";
 
 const {Title} = Typography;
 
@@ -32,7 +34,8 @@ class LoginForm extends React.Component {
     }
 
     state = {
-      alertType: ''
+        alertType: '',
+        loading: false
     };
 
     handleSubmit = e => {
@@ -45,7 +48,8 @@ class LoginForm extends React.Component {
              signIn(loginInfo).then(res => {
                  console.log(res)
                  if(res.data.data === 'SUCCESS') {
-                     this.props.history.push('/arcan');
+                     this.props.setUser(value.mailaddress);
+                     //this.props.history.push('/arcan');
                  }else if(res.data.data === 'FAIL_WRONG') {
                      this.setState({
                          alertType: 'wrong'
@@ -63,12 +67,18 @@ class LoginForm extends React.Component {
 
     handleClick() {
         this.props.form.validateFieldsAndScroll((err, value) => {
+            this.setState({
+               loading: true
+            });
             if(!err) {
                 let sendInfo = {};
                 sendInfo.mailaddress = value.mailaddress;
                 resendMail(sendInfo).then(res => {
                     console.log(res.data.data)
                     if(res.data.data === true) {
+                        this.setState({
+                            loading: false
+                        });
                         notification['success']({
                             message: 'Having sent verification email',
                             description: 'Please check your email to verify your account.'
@@ -92,9 +102,11 @@ class LoginForm extends React.Component {
         }else if(this.state.alertType === 'unactivated') {
             DOM = <div>
                 <Alert message="Your email has not been activated!" type="warning" closeText="Close Now"/>
-                <Button type="link" block onClick={this.handleClick}>
-                    Resend Verification Email
-                </Button>
+                <Spin spinning={this.state.loading}>
+                    <Button type="link" block onClick={this.handleClick}>
+                        Resend Verification Email
+                    </Button>
+                </Spin>
             </div>
         }else {
             DOM = <div></div>
@@ -142,4 +154,14 @@ class LoginForm extends React.Component {
 
 const Login = Form.create({name: 'login'})(LoginForm);
 
-export default Login
+const mapStateToProps = (state)=>{
+    return {
+        user: state.user
+    }
+};
+
+const actionCreators = {
+  setUser: userActions.setUser
+};
+
+export default connect(mapStateToProps, actionCreators)(Login)

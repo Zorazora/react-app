@@ -5,6 +5,7 @@
 }
 .logo {
     height: 48px;
+    cursor: pointer;
 }
 .slot {
     position: absolute;

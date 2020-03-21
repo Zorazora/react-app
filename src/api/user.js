@@ -30,3 +30,11 @@ export function resendMail(data) {
         data
     })
 }
+
+export function getUser(data) {
+    return axios({
+        url: '/login/current',
+        method: 'post',
+        data
+    })
+}
