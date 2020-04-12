@@ -81,7 +81,9 @@ function token(state = defaultState, action) {
 function logout(state = defaultState, action) {
     switch (action.type) {
         case 'LOGOUT':
-            return {};
+            return {
+                isLogging: action.status,
+            };
         default:
             return state;
     }

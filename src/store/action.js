@@ -11,7 +11,7 @@ function setUser(mailaddress) {
         let mailInfo = {};
         mailInfo.mailaddress = mailaddress;
         getUser(mailInfo).then(res => {
-            localStorage.setItem("user", JSON.stringify(res.data.data))
+            localStorage.setItem("user", JSON.stringify(res.data.data));
             dispatch({type: 'SET_USER', user: res.data.data});
             history.push('/arcan')
         })
@@ -21,7 +21,7 @@ function setUser(mailaddress) {
 function logout() {
     return dispatch => {
         localStorage.removeItem("user");
-        dispatch({type: 'LOGOUT'});
+        dispatch({type: 'LOGOUT', status: false});
         history.push('/arcan');
         window.location.reload();
     };

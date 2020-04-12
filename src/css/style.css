@@ -22,3 +22,16 @@
     border-radius: 5px;
     text-align: center;
 }
+
+.repoList {
+    margin-top: 10px;
+}
+.form-text {
+    font-family: Verdana;
+    font-weight: bold;
+    color: black;
+}
+.title-text {
+    font-family: Verdana;
+    color: black;
+}

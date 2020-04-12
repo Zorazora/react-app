@@ -3,6 +3,9 @@ import {Upload, Button, Icon, message} from 'antd';
 import {uploadZip} from "../api/api";
 
 class Main extends React.Component {
+    constructor(props) {
+        super(props);
+    }
     state = {
         fileList: [],
         uploading: false,

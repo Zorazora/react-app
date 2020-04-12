@@ -15,7 +15,7 @@ class MainLayout extends React.Component {
     }
 
     async componentDidMount() {
-        console.log(this.props)
+        // console.log('props:', this.props)
     }
 
     signOut() {
@@ -26,10 +26,13 @@ class MainLayout extends React.Component {
         const { user, isLogging } = this.props;
 
         let menu = <Menu>
-            <Menu.Item key='0' onClick={this.signOut}>
+            <Menu.Item key='0'>
+                <Link to={{pathname: '/arcan/dashboard/'+user.token}}>My Repositories</Link>
+            </Menu.Item>
+            <Menu.Item key='1' onClick={this.signOut}>
                 Sign out
             </Menu.Item>
-        </Menu>
+        </Menu>;
 
         let Right = null;
         if(isLogging) {
@@ -73,7 +76,6 @@ class MainLayout extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    // console.log('MainLayout State:', state);
     return state.user;
 };
 

@@ -5,8 +5,8 @@ import {Button} from 'antd'
 
 class App extends React.Component {
     constructor(props) {
-      super(props)
-      this.handleClickBtn = this.handleClickBtn.bind(this)
+        super(props);
+        this.handleClickBtn = this.handleClickBtn.bind(this);
     }
     async componentDidMount() {
         console.log('hi')
@@ -20,7 +20,8 @@ class App extends React.Component {
     }
 
     handleClickBtn() {
-        this.props.history.push('/arcan/main')
+        console.log('App:',this.props)
+        //this.props.history.push('/arcan/main')
     }
 
     render() {
