@@ -29,7 +29,10 @@ class MainLayout extends React.Component {
             <Menu.Item key='0'>
                 <Link to={{pathname: '/arcan/dashboard/'+user.token}}>My Repositories</Link>
             </Menu.Item>
-            <Menu.Item key='1' onClick={this.signOut}>
+            <Menu.Item key='1'>
+                <Link to={{pathname: '/arcan/usercenter'}}>User Center</Link>
+            </Menu.Item>
+            <Menu.Item key='2' onClick={this.signOut}>
                 Sign out
             </Menu.Item>
         </Menu>;

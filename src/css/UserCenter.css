@@ -1,0 +1,81 @@
+.Avatar{
+    width: 100%;
+    max-width: 400px;
+    height: 400px;
+    opacity: 0.8;
+    border-radius:10px 10px;
+    box-shadow: 0px 0px 10px 5px #E0E0E0;
+}
+
+.Avatar:hover{
+    width: 100%;
+    max-width: 400px;
+    border-radius:10px 10px;
+    box-shadow: 0px 0px 50px 15px #C0C0C0;
+    transition: box-shadow 0.5s;
+}
+
+.UserCenterBorder{
+    margin-top: 100px;
+    margin-left: 20%;
+    display: flex;
+}
+
+.LeftAvatar{
+    max-width: 400px;
+    width: 100%;
+    height: 400px;
+    float: left;
+    text-align: center;
+}
+
+
+.RightInfoBorder{
+    margin-left: 5px;
+    /*background: #E0E0E0;*/
+    width: 300px;
+    border-radius:5px 5px;
+    box-shadow: 0px 0px 10px 5px #E0E0E0;
+    text-align: center;
+}
+
+.UserName{
+    font-weight: bold;
+    font-size:30px;
+    height: 150px;
+    padding: 40px 0;
+}
+
+.BottomInfo{
+    display: flex;
+    height: 150px;
+}
+
+.BottomLeft{
+    width: 180px;
+    padding: 30px 0;
+    overflow: hidden;
+}
+
+.Mail{
+    font-weight: 900;
+    font-size: 13px;
+    color: darkgray;
+}
+
+.address{
+    font-weight: 700;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.BottomRight{
+    width: 120px;
+    padding: 30px 0;
+    overflow: hidden;
+}
+.check-button{
+    margin-top: 10px;
+}
+
+

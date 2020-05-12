@@ -48,3 +48,20 @@ export function getRepositoryProject(repoId) {
     })
 }
 
+export function testExist(data) {
+    return axios({
+        url: '/repository/testExist',
+        method: 'post',
+        data: data
+    })
+}
+
+export function analysisGithubProject(data) {
+    return axios({
+        url: '/repository/analysisGithubProject',
+        method: 'post',
+        data: data
+    })
+}
+
+

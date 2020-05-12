@@ -35,3 +35,9 @@
     font-family: Verdana;
     color: black;
 }
+.github-text {
+    padding: 0 16px;
+}
+.github-textCreated {
+    padding: 5px 0;
+}

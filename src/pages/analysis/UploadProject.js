@@ -1,6 +1,6 @@
 import React from 'react';
-import {Upload, Button, Icon, message, Row, Col} from 'antd';
-import {uploadZip, analysis, getRepositoryProject} from "../../api/repository";
+import {Upload, Button, Icon, message, Row, Col, Input} from 'antd';
+import {uploadZip, analysis, getRepositoryProject, testExist,analysisGithubProject} from "../../api/repository";
 import "../../css/style.css"
 
 class UploadProject extends React.Component {
@@ -10,7 +10,9 @@ class UploadProject extends React.Component {
         repoId: '',
         status: '',
         projectInfo: {},
-        name: ''
+        name: '',
+        githubAddress: '',
+        test: false
     };
 
     async componentDidMount() {
@@ -70,8 +72,37 @@ class UploadProject extends React.Component {
         });
     };
 
+    testExist = (address) => {
+        let info = {};
+        info.githubAddress = address;
+        testExist(info).then(res => {
+            console.log(res);
+            this.setState({
+                githubAddress:address
+            });
+            this.setState({
+                test: res.data.success
+            });
+        });
+    }
+
+    analysisGithubProject = (address) =>  {
+        const { repoId,githubAddress} = this.state;
+        let info = {};
+        info.githubAddress = githubAddress;
+        info.repoId = repoId;
+        analysisGithubProject(info).then(res => {
+            console.log(res);
+        });
+    }
+
     render() {
-        const { uploading, fileList, status, projectInfo, name} = this.state;
+        const { uploading, fileList, status, projectInfo, name, githubAddress,test} = this.state;
+        const { Search } = Input;
+
+        const IconFont = Icon.createFromIconfontCN({
+            scriptUrl: '//at.alicdn.com/t/font_1805017_d3im7hiwj18.js',
+        });
 
         const uploadProps = {
             onRemove: file => {
@@ -109,18 +140,18 @@ class UploadProject extends React.Component {
         let TopButton = null;
         if (status === 'CREATED') {
             TopButton = <div>
-                <Row gutter={[0,24]}>
+                <Row gutter={3}>
                     <Col span={3}>
                         <p className='form-text'>Select Project</p>
                     </Col>
-                    <Col span={5}>
+                    <Col span={8}>
                         <Upload {...uploadProps}>
                             <Button size='small' type='primary'>
                                 Select
                             </Button>
                         </Upload>
                     </Col>
-                    <Col span={16}>
+                    <Col span={13}>
                         <Button size='small' type='primary' onClick={this.handleUpload}
                                 disabled={fileList.length === 0} loading={uploading}>
                             <Icon type='upload'/>
@@ -131,21 +162,21 @@ class UploadProject extends React.Component {
             </div>
         }else if (status === 'UPLOADED') {
             TopButton = <div>
-                <Row gutter={[0,24]}>
+                <Row gutter={3}>
                     <Col span={3}>
                         <p className='form-text'>Selected Project</p>
                     </Col>
                     <Col span={5}>
                         <p className='title-text'>{name}</p>
                     </Col>
-                    <Col span={5}>
+                    <Col span={8}>
                         <Upload {...uploadProps}>
                             <Button type='link'>
-                                Reselect
+                                Reselect from local
                             </Button>
                         </Upload>
                     </Col>
-                    <Col span={11}>
+                    <Col span={8}>
                         <Button size='small' type='primary' onClick={this.handleUpload}
                                 disabled={fileList.length === 0} loading={uploading}>
                             <Icon type='upload'/>
@@ -156,17 +187,94 @@ class UploadProject extends React.Component {
             </div>
         }
 
-        let AnalysisButton = <div>
-            <Row>
-                <Button size='small' type='primary' onClick={this.analysis}>
-                    Analysis
-                </Button>
-            </Row>
-        </div>
+        let AnalysisButton = null;
+        if (status === 'CREATED') {
+            AnalysisButton = <div>
+                <Row gutter={3}>
+                    <Col span={3}></Col>
+                    <Col span={8}>
+                        <div>Select from github</div>
+                    </Col>
+                    <Col span={8}>
+                        <Button size='small' type='primary' onClick={this.analysis}>
+                            Analysis
+                        </Button>
+                    </Col>
+                </Row>
+            </div>
+        }else if (status === 'UPLOADED') {
+            AnalysisButton = <div>
+                <Row gutter={3}>
+                    <Col span={3}></Col>
+                    <Col span={5}></Col>
+                    <Col span={8}>
+                        <div className="github-text">Reselect from github</div>
+                    </Col>
+                    <Col span={8}>
+                        <Button size='small' type='primary' onClick={this.analysis}>
+                            Analysis
+                        </Button>
+                    </Col>
+                </Row>
+            </div>
+        }
+
+
+        let GithubInputBox = null;
+        if (status === 'CREATED'){
+            GithubInputBox = <div>
+                <Row>
+                    <Col span={3}></Col>
+                    <Col span={8} className="github-textCreated">
+                        <Search
+                            placeholder="input search text"
+                            onSearch={value => this.testExist(value)}
+                            style={{ width: 300 }}
+                        />
+                    </Col>
+                </Row>
+            </div>
+        }else if (status === 'UPLOADED'){
+            GithubInputBox = <div>
+                <Row>
+                    <Col span={3}></Col>
+                    <Col span={5}></Col>
+                    <Col span={8} className="github-text">
+                        <Search
+                            placeholder="input search text"
+                            onSearch={value => this.testExist(value)}
+                            style={{ width: 300 }}
+                        />
+                    </Col>
+                </Row>
+            </div>
+        }
+
+        let TestIcon = null;
+        if(test === true){
+            TestIcon =
+            <div>
+                <Row>
+                    <Col span={3}></Col>
+                    <Col span={5}></Col>
+                    <Col span={3} className="github-text">
+                        <IconFont type="icon-duigou" />
+                    </Col>
+                    <Col span={2}>
+                        <Button type='link' onClick={this.analysisGithubProject(githubAddress)}>
+                            analysis
+                        </Button>
+                    </Col>
+                </Row>
+            </div>
+        }
+
         return (
             <div style={{margin: 30, padding: 30}}>
                 {TopButton}
                 {AnalysisButton}
+                {GithubInputBox}
+                {TestIcon}
             </div>
         )
     }
