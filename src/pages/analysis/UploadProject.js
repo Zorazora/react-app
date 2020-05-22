@@ -1,6 +1,6 @@
 import React from 'react';
-import {Upload, Button, Icon, message, Row, Col, Input} from 'antd';
-import {uploadZip, analysis, getRepositoryProject, testExist,analysisGithubProject} from "../../api/repository";
+import {Upload, Button, Icon, message, Row, Col, Input, List,Card,Divider} from 'antd';
+import {uploadZip, analysis, getRepositoryProject, testExist,analysisGithubProject,analysisRelease} from "../../api/repository";
 import "../../css/style.css"
 
 class UploadProject extends React.Component {
@@ -12,7 +12,12 @@ class UploadProject extends React.Component {
         projectInfo: {},
         name: '',
         githubAddress: '',
-        test: false
+        test: false,
+        releaseList: [],
+        choosedRelease: '',
+        result: [],
+        key: 'UD',
+        isAnalysis: false
     };
 
     async componentDidMount() {
@@ -63,12 +68,18 @@ class UploadProject extends React.Component {
     };
 
     analysis = () => {
+        console.log("start");
         const { repoId, projectInfo} = this.state;
         let info = {};
         info.repoId = repoId;
         info.projectId = projectInfo.projectId;
         analysis(info).then(res => {
-
+            console.log("res");
+            console.log(res.data.data);
+            this.setState({
+                result: res.data.data,
+                isAnalysis: true
+            });
         });
     };
 
@@ -78,13 +89,13 @@ class UploadProject extends React.Component {
         testExist(info).then(res => {
             console.log(res);
             this.setState({
-                githubAddress:address
+                githubAddress:address,
+                test: res.data.success,
+                releaseList: res.data.releases
             });
-            this.setState({
-                test: res.data.success
-            });
+
         });
-    }
+    };
 
     analysisGithubProject = (address) =>  {
         const { repoId,githubAddress} = this.state;
@@ -96,13 +107,35 @@ class UploadProject extends React.Component {
         });
     }
 
+    analysisRelease = (release) => {
+        const { repoId,githubAddress} = this.state;
+        console.log(release)
+        let info = {};
+        info.githubAddress = githubAddress;
+        info.repoId = repoId;
+        info.release = release;
+        analysisRelease(info).then(res => {
+            console.log(res);
+            this.setState({
+                result : res.data.data
+            });
+        });
+    }
+
+    onTabChange = (key, type) => {
+        console.log(key, type);
+        this.setState({ [type]: key });
+    };
+
     render() {
-        const { uploading, fileList, status, projectInfo, name, githubAddress,test} = this.state;
+        const { uploading, fileList, status, projectInfo, name, githubAddress,test,releaseList,result,isAnalysis} = this.state;
         const { Search } = Input;
 
         const IconFont = Icon.createFromIconfontCN({
             scriptUrl: '//at.alicdn.com/t/font_1805017_d3im7hiwj18.js',
         });
+
+        const choosedRelease = null;
 
         const uploadProps = {
             onRemove: file => {
@@ -252,22 +285,234 @@ class UploadProject extends React.Component {
 
         let TestIcon = null;
         if(test === true){
-            TestIcon =
-            <div>
-                <Row>
-                    <Col span={3}></Col>
-                    <Col span={5}></Col>
-                    <Col span={3} className="github-text">
-                        <IconFont type="icon-duigou" />
-                    </Col>
-                    <Col span={2}>
-                        <Button type='link' onClick={this.analysisGithubProject(githubAddress)}>
-                            analysis
-                        </Button>
-                    </Col>
-                </Row>
-            </div>
+            if (status === 'CREATED'){
+                TestIcon =
+                    <div>
+                        <Row>
+                            <Col span={3}></Col>
+                            <Col span={4}>
+                                <IconFont type="icon-duigou" />
+                            </Col>
+                            <Col span={2}>
+                                <Button type='link' onClick={this.analysisGithubProject(githubAddress)}>
+                                    analysis
+                                </Button>
+                            </Col>
+                        </Row>
+                    </div>
+            }else if (status === 'UPLOADED'){
+                TestIcon =
+                    <div>
+                        <Row>
+                            <Col span={3}></Col>
+                            <Col span={5}></Col>
+                            <Col span={4} className="github-text">
+                                <IconFont type="icon-duigou" />
+                            </Col>
+                            <Col span={2}>
+                                <Button type='link' onClick={this.analysisGithubProject(githubAddress)}>
+                                    analysis
+                                </Button>
+                            </Col>
+                        </Row>
+                    </div>
+            }
         }
+
+        let EditionButton = null;
+        if(test === true){
+            if (status === 'CREATED'){
+                EditionButton =
+                    <div>
+                        <Col span={3}></Col>
+                        <Col span={3}>
+                            <div>版本</div>
+                            <List itemLayout='horizontal' dataSource={releaseList} renderItem={item => (
+                                <List.Item>
+                                    <div>
+                                    <Button type='link' onClick={()=>this.analysisRelease(item)}>
+                                        {item}
+                                    </Button>
+                                    </div>
+                                </List.Item>
+                            )}>
+                            </List>
+                        </Col>
+                    </div>
+            }else if (status === 'UPLOADED'){
+                EditionButton =
+                    <div>
+                        <Col span={3}></Col>
+                        <Col span={5}></Col>
+                        <Col span={3}>
+                            <div>版本</div>
+                            <List itemLayout='horizontal' dataSource={releaseList} renderItem={item => (
+                                <List.Item>
+                                    <div>
+                                        <Button type='link' onClick={()=>this.analysisRelease(item)}>
+                                            {item}
+                                        </Button>
+                                    </div>
+                                </List.Item>
+                            )}>
+                            </List>
+                        </Col>
+                    </div>
+            }
+        }
+
+        const tabList = [
+            {
+                key: 'UD',
+                tab: 'UD (Unstable Dependency)',
+            },
+            {
+                key: 'HD',
+                tab: 'HD (Hub-Like Dependency)',
+            },
+            {
+                key: 'CD',
+                tab: 'CD (Cyclic Dependency)',
+            }
+        ];
+
+        let UD = result.UD;
+        let CD = result.CD;
+        let HD = result.HD;
+
+        let testData = [
+            // ['1','2','3'],
+            // ['4','5','6'],
+            // ['7','8','9']
+        ]
+
+        let contentList = null;
+        if(isAnalysis){ //已分析
+            contentList = {
+                UD: <div>
+                    <List  dataSource={UD} renderItem={item => (
+                        <List.Item>
+                            <div>
+                                <Row>
+                                    Package Name : {item.packageName}
+                                </Row>
+                                <Row>
+                                    Instability : {item.instability}
+                                </Row>
+                                {/*<Row>*/}
+                                {/*Filtered : {item.filtered}*/}
+                                {/*</Row>*/}
+                                <Row>
+                                    Total : {item.total}
+                                </Row>
+                                <Row>
+                                    Cause Smell Packages :
+                                </Row>
+                                <div>
+                                    {
+                                        Object.keys(item.causeSmellPackages).map((obj,idx) => (
+                                                <Row key={idx} className="causeSmellPackage">{obj} : {item.causeSmellPackages[obj]}</Row>
+                                            )
+                                        )
+                                    }
+                                </div>
+
+                            </div>
+                        </List.Item>
+                    )}>
+                    </List>
+                </div>,
+                HD: <div>
+                    <List  dataSource={HD} renderItem={item => (
+                        <List.Item>
+                            <Row>{item}</Row>
+                        </List.Item>
+                    )}>
+                    </List>
+                </div>,
+                CD: <div>
+                    <Row className="cd-text">class : </Row>
+                    <Row className="table-text">Table One(以cycle作为行以class/package作为列):</Row>
+                    <Row className="table-flow">
+                        {
+                        // CD.class.tableOne.map(function(item,index) { // map 返回的是一个新数组
+                        // return <Row>
+                        //     <Col span={2}>line {index+1}</Col>
+                        //     {
+                        //     item.map(function(item1,index1) { // map 返回的是一个新数组
+                        //     return <Col span={1}>{item1}</Col>
+                        //     })
+                        //     }
+                        // </Row>
+                        // })
+                        }
+                    </Row>
+                    <Row className="table-text">Table Two(class/package):</Row>
+                    <Divider />
+                    <Row className="cd-text">package : </Row>
+                    <Row className="table-text">Table One(以cycle作为行以class/package作为列):</Row>
+                    <Row className="table-text">Table Two(class/package):</Row>
+                </div>
+            };
+        }else{  //未分析
+            contentList = {
+                UD: <div>
+                    <List  dataSource={UD} renderItem={item => (
+                        <List.Item>
+                            <div>
+                                <Row>
+                                    Package Name : {item.packageName}
+                                </Row>
+                                <Row>
+                                    Instability : {item.instability}
+                                </Row>
+                                {/*<Row>*/}
+                                {/*Filtered : {item.filtered}*/}
+                                {/*</Row>*/}
+                                <Row>
+                                    Total : {item.total}
+                                </Row>
+                                <Row>
+                                    Cause Smell Packages :
+                                </Row>
+                                <div>
+                                    {
+                                        Object.keys(item.causeSmellPackages).map((obj,idx) => (
+                                                <Row key={idx} className="causeSmellPackage">{obj} : {item.causeSmellPackages[obj]}</Row>
+                                            )
+                                        )
+                                    }
+                                </div>
+
+                            </div>
+                        </List.Item>
+                    )}>
+                    </List>
+                </div>,
+                HD: <div>
+                    <List  dataSource={HD} renderItem={item => (
+                        <List.Item>
+                            <Row>{item}</Row>
+                        </List.Item>
+                    )}>
+                    </List>
+                </div>,
+                CD: <div>
+                </div>
+            };
+
+        }
+        let DetectionResult = <div className="detection">
+            {/*<div className='form-text'>Detection Result</div>*/}
+            {/*<div>UD</div>*/}
+            <Card title="Detection Result" hoverable={true} style={{ width: '100%' }}  tabList={tabList}
+                  activeTabKey={this.state.key}
+                  onTabChange={key => {
+                      this.onTabChange(key, 'key');
+                  }}>
+                {contentList[this.state.key]}
+            </Card>
+        </div>
 
         return (
             <div style={{margin: 30, padding: 30}}>
@@ -275,6 +520,8 @@ class UploadProject extends React.Component {
                 {AnalysisButton}
                 {GithubInputBox}
                 {TestIcon}
+                {EditionButton}
+                {DetectionResult}
             </div>
         )
     }

@@ -41,3 +41,41 @@
 .github-textCreated {
     padding: 5px 0;
 }
+
+.detection{
+    margin-top: 70px ;
+}
+
+.causeSmellPackage{
+    padding-left: 40px;
+}
+
+.cd-text {
+    font-family: Verdana;
+    font-weight: bold;
+    color: cadetblue;
+}
+
+.table-text {
+    font-family: Verdana;
+    font-weight: inherit;
+    color: black;
+    padding: 20px 20px;
+}
+
+.table-flow {
+    padding-left: 40px;
+}
+
+.title-text1 {
+    font-family: Verdana;
+    color: dodgerblue;
+    float: left;
+    width: 100px;
+}
+
+.title-text2 {
+    color: black;
+    float: left;
+    width: 200px;
+}

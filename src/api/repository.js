@@ -64,4 +64,19 @@ export function analysisGithubProject(data) {
     })
 }
 
+export function analysisRelease(data) {
+    return axios({
+        url: '/repository/analysisRelease',
+        method: 'post',
+        data: data
+    })
+}
+
+export function getHistoryProjectRes(repoId) {
+    return axios({
+        url: `/repository/HistoryProjectRes/${repoId}`,
+        method: 'get'
+    })
+}
+
 

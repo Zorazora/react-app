@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row,Button,Upload,message} from 'antd';
+import {Row,Button,Upload,message,Icon} from 'antd';
 import reqwest from 'reqwest';
 import {connect} from "react-redux";
 import {getAvatarPath} from "../../api/user"
@@ -45,6 +45,10 @@ class UserCenter extends React.Component {
 
     render() {
         const { user } = this.props;
+
+        const IconFont = Icon.createFromIconfontCN({
+            scriptUrl: '//at.alicdn.com/t/font_1805017_d3im7hiwj18.js',
+        });
 
         const {avatarPath,data} = this.state;
         // const avatarUrl = require(avatarPath);
@@ -119,7 +123,8 @@ class UserCenter extends React.Component {
                             </Upload>
                         </div>
                         <div className="RightInfoBorder">
-                            <div className="UserName">{user.username}</div>
+                            <div className="UserName">{user.username} </div>
+                            <IconFont type="icon-bianji" />
                             <div className="BottomInfo">
                                 <div className="BottomLeft">
                                     <div className="Mail">Mail</div>

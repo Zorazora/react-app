@@ -78,8 +78,11 @@ class RepoList extends React.Component {
                 <List itemLayout='horizontal' dataSource={data} renderItem={item => (
                     <List.Item>
                         <Link to={{pathname: '/arcan/repository/'+item.repoId}}>
-                            <List.Item.Meta title={item.repoName} description={item.description}/>
+                            <Row>
+                                <List.Item.Meta title={item.repoName} description={item.description}/>
+                            </Row>
                         </Link>
+                        <Link to={{pathname: '/arcan/history/'+item.repoId}} style={{marginRight: 470}}><Button>history</Button></Link>
                     </List.Item>
                 )}>
                 </List>

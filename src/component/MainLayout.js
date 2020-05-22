@@ -68,7 +68,7 @@ class MainLayout extends React.Component {
                     </Row>
                 </Header>
                 <Content style={{ padding: '0 50px', marginTop: 64 }}>
-                    <div style={{ background: '#fff', padding: 0, height: 690, marginTop: 38 }}>
+                    <div style={{ background: '#fff', padding: 0, height: 800, marginTop: 38 }}>
                         {this.props.children}
                     </div>
                 </Content>

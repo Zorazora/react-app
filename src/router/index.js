@@ -6,6 +6,7 @@ import MainLayout from '../component/MainLayout';
 import Dashboard from '../pages/dashboard/Dashboard';
 import UploadProject from '../pages/analysis/UploadProject'
 import UserCenter from '../pages/usercenter/UserCenter'
+import History from '../pages/history/History'
 import React from 'react';
 import {HashRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
 
@@ -22,6 +23,7 @@ const RouterConfig = () => (
                     <Route exact path='/arcan/register' component={Register}/>
                     <Route exact path='/arcan/dashboard/:userId' component={Dashboard}/>
                     <Route exact path='/arcan/usercenter' component={UserCenter}/>
+                    <Route exact path='/arcan/history/:repoId' component={History}/>
                 </MainLayout>
             }/>
             <Route exact path='/login' component={Login}/>
