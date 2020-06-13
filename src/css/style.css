@@ -43,7 +43,7 @@
 }
 
 .detection{
-    margin-top: 70px ;
+    margin-top: 160px ;
 }
 
 .causeSmellPackage{
@@ -79,3 +79,8 @@
     float: left;
     width: 200px;
 }
+
+.title1 {
+    color: black;
+}
+

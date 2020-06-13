@@ -79,4 +79,13 @@ export function getHistoryProjectRes(repoId) {
     })
 }
 
+export function findFitList(data) {
+    return axios({
+        url: '/repository/findList',
+        method: 'post',
+        data: data
+    })
+}
+
+
 

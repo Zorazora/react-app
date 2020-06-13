@@ -11,3 +11,11 @@
     position: absolute;
     right: 0;
 }
+
+.mainHeight{
+    background: #fff;
+    padding: 0;
+    height: auto;
+    min-height: 800px;
+    marginTop: 38px;
+}

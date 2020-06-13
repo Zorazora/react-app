@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/style.css';
 import {List, Row, Col, Input, Button, Modal, Form} from 'antd';
-import {getRepositoryList, createRepository} from "../api/repository";
+import {getRepositoryList, createRepository,findFitList} from "../api/repository";
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 
@@ -23,6 +23,20 @@ class RepoList extends React.Component {
 
     getRepositoryList() {
         getRepositoryList(this.props.user.token).then(res => {
+            console.log(res.data.data)
+            this.setState({
+                data: res.data.data
+            })
+        });
+    };
+
+    findFitList(value) {
+        console.log(value)
+        console.log("en")
+        let info = {};
+        info.userId = this.props.user.token;
+        info.keyword = value;
+        findFitList(info).then(res => {
             console.log(res.data.data)
             this.setState({
                 data: res.data.data
@@ -69,7 +83,7 @@ class RepoList extends React.Component {
                 <Row>
                     <Col span={18}>
                         <Search placeholder='Find a repository...'
-                                onSearch={value=>console.log(value)} enterButton/>
+                                onSearch={value=>this.findFitList(value)} enterButton/>
                     </Col>
                     <Col span={3} offset={3}>
                         <Button type='primary' icon='book' onClick={this.showModal}>New</Button>

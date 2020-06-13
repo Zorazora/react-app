@@ -1,5 +1,5 @@
 import React from 'react';
-import {Upload, Button, Icon, message, Row, Col, Input, List,Card,Divider} from 'antd';
+import {Upload, Button, Icon, message, Row, Col, Input, List,Card,Divider,Table} from 'antd';
 import {uploadZip, analysis, getRepositoryProject, testExist,analysisGithubProject,analysisRelease} from "../../api/repository";
 import "../../css/style.css"
 
@@ -97,15 +97,15 @@ class UploadProject extends React.Component {
         });
     };
 
-    analysisGithubProject = (address) =>  {
-        const { repoId,githubAddress} = this.state;
-        let info = {};
-        info.githubAddress = githubAddress;
-        info.repoId = repoId;
-        analysisGithubProject(info).then(res => {
-            console.log(res);
-        });
-    }
+    // analysisGithubProject = (address) =>  {
+    //     const { repoId,githubAddress} = this.state;
+    //     let info = {};
+    //     info.githubAddress = githubAddress;
+    //     info.repoId = repoId;
+    //     analysisGithubProject(info).then(res => {
+    //         console.log(res);
+    //     });
+    // }
 
     analysisRelease = (release) => {
         const { repoId,githubAddress} = this.state;
@@ -117,7 +117,8 @@ class UploadProject extends React.Component {
         analysisRelease(info).then(res => {
             console.log(res);
             this.setState({
-                result : res.data.data
+                result : res.data.data,
+                isAnalysis: true
             });
         });
     }
@@ -294,7 +295,7 @@ class UploadProject extends React.Component {
                                 <IconFont type="icon-duigou" />
                             </Col>
                             <Col span={2}>
-                                <Button type='link' onClick={this.analysisGithubProject(githubAddress)}>
+                                <Button type='link'>
                                     analysis
                                 </Button>
                             </Col>
@@ -310,7 +311,7 @@ class UploadProject extends React.Component {
                                 <IconFont type="icon-duigou" />
                             </Col>
                             <Col span={2}>
-                                <Button type='link' onClick={this.analysisGithubProject(githubAddress)}>
+                                <Button type='link'>
                                     analysis
                                 </Button>
                             </Col>
@@ -379,12 +380,42 @@ class UploadProject extends React.Component {
         let UD = result.UD;
         let CD = result.CD;
         let HD = result.HD;
+        // let nodeNames1 = result.CD.class.nodeNames;
+        // let nodeNames2 = result.CD.package.nodeNames;
 
-        let testData = [
-            // ['1','2','3'],
-            // ['4','5','6'],
-            // ['7','8','9']
-        ]
+        const columns = [
+            {
+                title: 'Node Names',
+                width: 100,
+                dataIndex: 'name',
+                key: 'name',
+                fixed: 'left',
+            },
+            { title: 'Column 1', dataIndex: 'address', key: '1' },
+            { title: 'Column 2', dataIndex: 'address', key: '2' },
+            { title: 'Column 3', dataIndex: 'address', key: '3' },
+            { title: 'Column 4', dataIndex: 'address', key: '4' },
+            { title: 'Column 5', dataIndex: 'address', key: '5' },
+            { title: 'Column 6', dataIndex: 'address', key: '6' },
+            { title: 'Column 7', dataIndex: 'address', key: '7' },
+            { title: 'Column 8', dataIndex: 'address', key: '8' },
+        ];
+        const data = [
+            {
+                key: '1',
+                name: 'John Brown',
+                age: 32,
+                address: 'New York Park',
+            },
+            {
+                key: '2',
+                name: 'Jim Green',
+                age: 40,
+                address: 'London Park',
+            },
+        ];
+
+        const test1 = ["xjsnckjsdn","cndsjkcnskc","cdjsncjskcns","xdscojdscs","1213321","83920382092","2","2","3"]
 
         let contentList = null;
         if(isAnalysis){ //已分析
@@ -423,7 +454,7 @@ class UploadProject extends React.Component {
                     </List>
                 </div>,
                 HD: <div>
-                    <List  dataSource={HD} renderItem={item => (
+                    <List  dataSource={result.HD.modified} renderItem={item => (
                         <List.Item>
                             <Row>{item}</Row>
                         </List.Item>
@@ -434,70 +465,99 @@ class UploadProject extends React.Component {
                     <Row className="cd-text">class : </Row>
                     <Row className="table-text">Table One(以cycle作为行以class/package作为列):</Row>
                     <Row className="table-flow">
-                        {
-                        // CD.class.tableOne.map(function(item,index) { // map 返回的是一个新数组
-                        // return <Row>
-                        //     <Col span={2}>line {index+1}</Col>
-                        //     {
-                        //     item.map(function(item1,index1) { // map 返回的是一个新数组
-                        //     return <Col span={1}>{item1}</Col>
-                        //     })
-                        //     }
-                        // </Row>
-                        // })
-                        }
+                        {/*{*/}
+                            {/*<Row>*/}
+                                {/*<Row span={2}><div className="title1">Cycle</div></Row>*/}
+                                {/*{*/}
+                                    {/*CD.class.nodeNames.map(function(item,index) { // map 返回的是一个新数组*/}
+                                        {/*return <Col span={5}>{item}</Col>*/}
+                                    {/*})*/}
+
+                                {/*})*/}
+
+                            {/*</Row>*/}
+                        {/*}*/}
+                        {/*{*/}
+                        {/*CD.class.tableOne.map(function(item,index) { // map 返回的是一个新数组*/}
+                        {/*return <Row>*/}
+                            {/*<Row span={2}><div className="title1">Cycle {index+1}</div></Row>*/}
+                            {/*{*/}
+                            {/*item.map(function(item1,index1) { // map 返回的是一个新数组*/}
+                            {/*return <Col span={5}>{item1}</Col>*/}
+                            {/*})*/}
+                            {/*}*/}
+                        {/*</Row>*/}
+                        {/*})*/}
+                        {/*}*/}
+                        <Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />
                     </Row>
+                    <Divider />
                     <Row className="table-text">Table Two(class/package):</Row>
+                    <Row className="table-flow">
+                        <Table columns={CD.class.colums2} dataSource={CD.class.data2} scroll={{ x: 1300 }} />
+                        {/*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*/}
+                    </Row>
                     <Divider />
                     <Row className="cd-text">package : </Row>
                     <Row className="table-text">Table One(以cycle作为行以class/package作为列):</Row>
+                    <Row className="table-flow">
+                        <Table columns={CD.package.colums1} dataSource={CD.package.data1} scroll={{ x: 1300 }} />
+                        {/*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*/}
+                    </Row>
+                    <Divider />
                     <Row className="table-text">Table Two(class/package):</Row>
+                    <Row className="table-flow">
+                        <Table columns={CD.package.colums2} dataSource={CD.package.data2} scroll={{ x: 1300 }} />
+                        {/*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*/}
+                    </Row>
+                    <Divider />
                 </div>
             };
         }else{  //未分析
             contentList = {
                 UD: <div>
-                    <List  dataSource={UD} renderItem={item => (
-                        <List.Item>
-                            <div>
-                                <Row>
-                                    Package Name : {item.packageName}
-                                </Row>
-                                <Row>
-                                    Instability : {item.instability}
-                                </Row>
+                    {/*<List  dataSource={UD} renderItem={item => (*/}
+                        {/*<List.Item>*/}
+                            {/*<div>*/}
                                 {/*<Row>*/}
-                                {/*Filtered : {item.filtered}*/}
+                                    {/*Package Name : {item.packageName}*/}
                                 {/*</Row>*/}
-                                <Row>
-                                    Total : {item.total}
-                                </Row>
-                                <Row>
-                                    Cause Smell Packages :
-                                </Row>
-                                <div>
-                                    {
-                                        Object.keys(item.causeSmellPackages).map((obj,idx) => (
-                                                <Row key={idx} className="causeSmellPackage">{obj} : {item.causeSmellPackages[obj]}</Row>
-                                            )
-                                        )
-                                    }
-                                </div>
+                                {/*<Row>*/}
+                                    {/*Instability : {item.instability}*/}
+                                {/*</Row>*/}
+                                {/*/!*<Row>*!/*/}
+                                {/*/!*Filtered : {item.filtered}*!/*/}
+                                {/*/!*</Row>*!/*/}
+                                {/*<Row>*/}
+                                    {/*Total : {item.total}*/}
+                                {/*</Row>*/}
+                                {/*<Row>*/}
+                                    {/*Cause Smell Packages :*/}
+                                {/*</Row>*/}
+                                {/*<div>*/}
+                                    {/*{*/}
+                                        {/*Object.keys(item.causeSmellPackages).map((obj,idx) => (*/}
+                                                {/*<Row key={idx} className="causeSmellPackage">{obj} : {item.causeSmellPackages[obj]}</Row>*/}
+                                            {/*)*/}
+                                        {/*)*/}
+                                    {/*}*/}
+                                {/*</div>*/}
 
-                            </div>
-                        </List.Item>
-                    )}>
-                    </List>
+                            {/*</div>*/}
+                        {/*</List.Item>*/}
+                    {/*)}>*/}
+                    {/*</List>*/}
                 </div>,
                 HD: <div>
-                    <List  dataSource={HD} renderItem={item => (
-                        <List.Item>
-                            <Row>{item}</Row>
-                        </List.Item>
-                    )}>
-                    </List>
+                    {/*<List  dataSource={HD} renderItem={item => (*/}
+                        {/*<List.Item>*/}
+                            {/*<Row>{item}</Row>*/}
+                        {/*</List.Item>*/}
+                    {/*)}>*/}
+                    {/*</List>*/}
                 </div>,
                 CD: <div>
+                    {/*<Table columns={columns} dataSource={data} scroll={{ x: 1300 }} />*/}
                 </div>
             };
 
