@@ -33,9 +33,12 @@ class UserCenter extends React.Component {
     getAvatarPath(){
         getAvatarPath(this.props.user.token).then(res => {
             console.log(res.data)
-            this.setState({
-                avatarPath: require("/Users/zhuyuxin/arcan/avatar"+res.data.avatarPath)
-            })
+            if(this.props.user.avatar !== null){
+                console.log("okk")
+                this.setState({
+                    avatarPath: require("/Users/zhuyuxin/arcan/avatar"+res.data.avatarPath)
+                })
+            }
         });
     }
 

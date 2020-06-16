@@ -1,6 +1,6 @@
 import React from 'react';
 import {getHistoryProjectRes} from "../../api/repository";
-import {Upload, Button, Icon, message, Row, Col, Input, List,Card,Divider} from 'antd';
+import {Upload, Button, Icon, message, Row, Col, Input, List,Card,Divider,Table} from 'antd';
 import "../../css/style.css"
 
 class History extends React.Component {
@@ -13,7 +13,8 @@ class History extends React.Component {
         key: 'UD',
         CD:{},
         UD:{},
-        HD:{}
+        HD:{},
+        isOK: false
     };
 
     async componentDidMount() {
@@ -39,10 +40,12 @@ class History extends React.Component {
     changeIndex(index) {
         this.setState({
             index : index,
-            CD : this.state.results[index].CD,
             UD : this.state.results[index].UD,
-            HD : this.state.results[index].HD
+            HD : this.state.results[index].HD,
+            CD : this.state.results[index].CD,
+            isOK: true
         });
+        console.log(this.state.results[index].CD)
     }
 
     onTabChange = (key, type) => {
@@ -53,7 +56,7 @@ class History extends React.Component {
 
     render() {
 
-        const { histories ,projectNames, index, results} = this.state;
+        const { histories ,projectNames, index, results,isOK} = this.state;
 
         const tabList = [
             {
@@ -70,76 +73,150 @@ class History extends React.Component {
             }
         ];
 
-        // let UD = [];
-        // let CD = [];
-        // let HD = [];
         let contentList = null;
-        contentList = {
-            UD: <div>
-                <List  dataSource={this.state.UD} renderItem={item => (
-                    <List.Item>
-                        <div>
-                            <Row>
-                                Package Name : {item.packageName}
-                            </Row>
-                            <Row>
-                                Instability : {item.instability}
-                            </Row>
-                            {/*<Row>*/}
-                            {/*Filtered : {item.filtered}*/}
-                            {/*</Row>*/}
-                            <Row>
-                                Total : {item.total}
-                            </Row>
-                            <Row>
-                                Cause Smell Packages :
-                            </Row>
+        if(isOK){
+            contentList = {
+                UD: <div>
+                    <List  dataSource={this.state.UD} renderItem={item => (
+                        <List.Item>
                             <div>
-                                {
-                                    Object.keys(item.causeSmellPackages).map((obj,idx) => (
-                                            <Row key={idx} className="causeSmellPackage">{obj} : {item.causeSmellPackages[obj]}</Row>
+                                <Row>
+                                    Package Name : {item.packageName}
+                                </Row>
+                                <Row>
+                                    Instability : {item.instability}
+                                </Row>
+                                {/*<Row>*/}
+                                {/*Filtered : {item.filtered}*/}
+                                {/*</Row>*/}
+                                <Row>
+                                    Total : {item.total}
+                                </Row>
+                                <Row>
+                                    Cause Smell Packages :
+                                </Row>
+                                <div>
+                                    {
+                                        Object.keys(item.causeSmellPackages).map((obj,idx) => (
+                                                <Row key={idx} className="causeSmellPackage">{obj} : {item.causeSmellPackages[obj]}</Row>
+                                            )
                                         )
-                                    )
-                                }
-                            </div>
+                                    }
+                                </div>
 
-                        </div>
-                    </List.Item>
-                )}>
-                </List>
-            </div>,
-            HD: <div>
-                <List  dataSource={this.state.HD} renderItem={item => (
-                    <List.Item>
-                        <Row>{item}</Row>
-                    </List.Item>
-                )}>
-                </List>
-            </div>,
-            CD: <div>
-                <Row className="cd-text">class : </Row>
-                <Row className="table-text">Table One(以cycle作为行以class/package作为列):</Row>
-                <Row className="table-flow">
-                    {
-                        // CD.class.tableOne.map(function(item,index) { // map 返回的是一个新数组
-                        // return <Row>
-                        //     <Col span={2}>line {index+1}</Col>
-                        //     {
-                        //     item.map(function(item1,index1) { // map 返回的是一个新数组
-                        //     return <Col span={1}>{item1}</Col>
-                        //     })
-                        //     }
-                        // </Row>
-                        // })
-                    }
-                </Row>
-                <Row className="table-text">Table Two(class/package):</Row>
-                <Divider />
-                <Row className="cd-text">package : </Row>
-                <Row className="table-text">Table One(以cycle作为行以class/package作为列):</Row>
-                <Row className="table-text">Table Two(class/package):</Row>
-            </div>
-        };
+                            </div>
+                        </List.Item>
+                    )}>
+                    </List>
+                </div>,
+                HD: <div>
+                    <List  dataSource={this.state.HD.modified} renderItem={item => (
+                        <List.Item>
+                            <Row>{item}</Row>
+                        </List.Item>
+                    )}>
+                    </List>
+                </div>,
+                CD: <div>
+                    <Row className="cd-text">class : </Row>
+                    <Row className="table-text">Table One(以cycle作为行以class/package作为列):</Row>
+                    <Row className="table-flow">
+                        <Table columns={this.state.CD.class.colums1} dataSource={this.state.CD.class.data1} scroll={{ x: 1300 }} />
+                    </Row>
+                    <Divider />
+                    {/*<Row className="table-text">Table Two(class/package):</Row>*/}
+                    {/*<Row className="table-flow">*/}
+                    {/*<Table columns={this.state.CD.class.colums2} dataSource={this.state.CD.class.data2} scroll={{ x: 1300 }} />*/}
+                    {/*/!*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*!/*/}
+                    {/*</Row>*/}
+                    {/*<Divider />*/}
+                    {/*<Row className="cd-text">package : </Row>*/}
+                    {/*<Row className="table-text">Table One(以cycle作为行以class/package作为列):</Row>*/}
+                    {/*<Row className="table-flow">*/}
+                    {/*<Table columns={this.state.CD.package.colums1} dataSource={this.state.CD.package.data1} scroll={{ x: 1300 }} />*/}
+                    {/*/!*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*!/*/}
+                    {/*</Row>*/}
+                    {/*<Divider />*/}
+                    {/*<Row className="table-text">Table Two(class/package):</Row>*/}
+                    {/*<Row className="table-flow">*/}
+                    {/*<Table columns={this.state.CD.package.colums2} dataSource={this.state.CD.package.data2} scroll={{ x: 1300 }} />*/}
+                    {/*/!*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*!/*/}
+                    {/*</Row>*/}
+                    {/*<Divider />*/}
+                </div>
+            };
+        }else{
+            contentList = {
+                UD: <div>
+                    <List  dataSource={this.state.UD} renderItem={item => (
+                        <List.Item>
+                            <div>
+                                <Row>
+                                    Package Name : {item.packageName}
+                                </Row>
+                                <Row>
+                                    Instability : {item.instability}
+                                </Row>
+                                {/*<Row>*/}
+                                {/*Filtered : {item.filtered}*/}
+                                {/*</Row>*/}
+                                <Row>
+                                    Total : {item.total}
+                                </Row>
+                                <Row>
+                                    Cause Smell Packages :
+                                </Row>
+                                <div>
+                                    {
+                                        Object.keys(item.causeSmellPackages).map((obj,idx) => (
+                                                <Row key={idx} className="causeSmellPackage">{obj} : {item.causeSmellPackages[obj]}</Row>
+                                            )
+                                        )
+                                    }
+                                </div>
+
+                            </div>
+                        </List.Item>
+                    )}>
+                    </List>
+                </div>,
+                HD: <div>
+                    <List  dataSource={this.state.HD.modified} renderItem={item => (
+                        <List.Item>
+                            <Row>{item}</Row>
+                        </List.Item>
+                    )}>
+                    </List>
+                </div>,
+                CD: <div>
+                    <Row className="cd-text">class : </Row>
+                    <Row className="table-text">Table One(以cycle作为行以class/package作为列):</Row>
+                    <Row className="table-flow">
+                        {/*<Table columns={this.state.CD.class.colums1} dataSource={this.state.CD.class.data1} scroll={{ x: 1300 }} />*/}
+                    </Row>
+                    <Divider />
+                    {/*<Row className="table-text">Table Two(class/package):</Row>*/}
+                    {/*<Row className="table-flow">*/}
+                    {/*<Table columns={this.state.CD.class.colums2} dataSource={this.state.CD.class.data2} scroll={{ x: 1300 }} />*/}
+                    {/*/!*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*!/*/}
+                    {/*</Row>*/}
+                    {/*<Divider />*/}
+                    {/*<Row className="cd-text">package : </Row>*/}
+                    {/*<Row className="table-text">Table One(以cycle作为行以class/package作为列):</Row>*/}
+                    {/*<Row className="table-flow">*/}
+                    {/*<Table columns={this.state.CD.package.colums1} dataSource={this.state.CD.package.data1} scroll={{ x: 1300 }} />*/}
+                    {/*/!*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*!/*/}
+                    {/*</Row>*/}
+                    {/*<Divider />*/}
+                    {/*<Row className="table-text">Table Two(class/package):</Row>*/}
+                    {/*<Row className="table-flow">*/}
+                    {/*<Table columns={this.state.CD.package.colums2} dataSource={this.state.CD.package.data2} scroll={{ x: 1300 }} />*/}
+                    {/*/!*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*!/*/}
+                    {/*</Row>*/}
+                    {/*<Divider />*/}
+                </div>
+            };
+        }
 
 
         let DetectionResult = null;

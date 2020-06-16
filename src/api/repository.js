@@ -87,5 +87,13 @@ export function findFitList(data) {
     })
 }
 
+export function downloadRelease(data) {
+    return axios({
+        url: '/repository/downloadRelease',
+        method: 'post',
+        data: data
+    })
+}
+
 
 
