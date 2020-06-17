@@ -41,9 +41,8 @@ class UserCenter extends React.Component {
                 console.log("ok")
                 this.setState({
                     // avatarPath: require("/Users/zhuyuxin/arcan/avatar"+res.data.avatarPath)
-
-                    // avatarPath: require("../../images"+res.data.avatarPath)
-                    avatarPath: require("../../images/8a6b61eef63d4a5d96eb449de4857af0/u=427719793,2046993105&fm=27&gp=0.jpg")
+                    avatarPath: require("../../images"+res.data.avatarPath)
+                    // avatarPath: require("../../images/8a6b61eef63d4a5d96eb449de4857af0/u=427719793,2046993105&fm=27&gp=0.jpg")
                 })
             }
         });
