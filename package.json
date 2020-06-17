@@ -10,6 +10,7 @@
     "antd": "^3.26.8",
     "babel-plugin-import": "^1.13.0",
     "customize-cra": "^0.9.1",
+    "eject": "0.0.4",
     "history": "^4.10.1",
     "js-md5": "^0.7.3",
     "less": "^3.10.3",
@@ -23,6 +24,7 @@
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
+    "reqwest": "^2.0.5",
     "typescript": "^3.7.4"
   },
   "scripts": {

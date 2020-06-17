@@ -2,7 +2,7 @@ import React from 'react';
 import {Row,Button,Upload,message,Icon} from 'antd';
 import reqwest from 'reqwest';
 import {connect} from "react-redux";
-import {getAvatarPath} from "../../api/user"
+import {getAvatarPath,getUserByUserId} from "../../api/user"
 import '../../css/UserCenter.css';
 import DefaultAvatar from '../../images/default-avatar.png';
 import {getRepositoryList} from "../../api/repository";
@@ -13,11 +13,14 @@ class UserCenter extends React.Component {
         this.state = {
             loading: false,
             avatarPath : '',
-            data : []
+            data : [],
+            WebAppConfigBase: '/Users/zhuyuxin/arcan/avatar',
+            user: {}
         };
     }
 
     async componentDidMount() {
+        this.getUserByUserId();
         this.getRepositoryList();
         this.getAvatarPath();
     };
@@ -31,14 +34,28 @@ class UserCenter extends React.Component {
     };
 
     getAvatarPath(){
+        console.log("user")
+        console.log(this.props.user)
         getAvatarPath(this.props.user.token).then(res => {
             console.log(res.data)
-            if(this.props.user.avatar !== null){
+            if(this.state.user.avatar !== null){
                 console.log("okk")
                 this.setState({
-                    avatarPath: require("/Users/zhuyuxin/arcan/avatar"+res.data.avatarPath)
+                    // avatarPath: require("/Users/zhuyuxin/arcan/avatar"+res.data.avatarPath)
+                    // avatarPath: require(this.state.WebAppConfigBase+res.data.avatarPath)
+                    avatarPath: require("/Users/zhuyuxin/arcan/avatar/8a6b61eef63d4a5d96eb449de4857af0/u=3484334960,3948950267&fm=27&gp=0.jpg")
                 })
             }
+        });
+    }
+
+    getUserByUserId(){
+        console.log("getUserByUserId")
+        getUserByUserId(this.props.user.token).then(res => {
+            console.log(res.data)
+            this.setState({
+                user: res.data.user
+            })
         });
     }
 
@@ -79,6 +96,7 @@ class UserCenter extends React.Component {
                     success: (res) => {//上传成功回调
                         console.log(res)
                         if (res.success === true) {
+                            user.avatar = res.imageUrl
                             this.getAvatarPath();
                             message.success('上传成功！');
                         }

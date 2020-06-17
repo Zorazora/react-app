@@ -124,25 +124,25 @@ class History extends React.Component {
                         <Table columns={this.state.CD.class.colums1} dataSource={this.state.CD.class.data1} scroll={{ x: 1300 }} />
                     </Row>
                     <Divider />
-                    {/*<Row className="table-text">Table Two(class/package):</Row>*/}
-                    {/*<Row className="table-flow">*/}
-                    {/*<Table columns={this.state.CD.class.colums2} dataSource={this.state.CD.class.data2} scroll={{ x: 1300 }} />*/}
-                    {/*/!*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*!/*/}
-                    {/*</Row>*/}
-                    {/*<Divider />*/}
-                    {/*<Row className="cd-text">package : </Row>*/}
-                    {/*<Row className="table-text">Table One(以cycle作为行以class/package作为列):</Row>*/}
-                    {/*<Row className="table-flow">*/}
-                    {/*<Table columns={this.state.CD.package.colums1} dataSource={this.state.CD.package.data1} scroll={{ x: 1300 }} />*/}
-                    {/*/!*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*!/*/}
-                    {/*</Row>*/}
-                    {/*<Divider />*/}
-                    {/*<Row className="table-text">Table Two(class/package):</Row>*/}
-                    {/*<Row className="table-flow">*/}
-                    {/*<Table columns={this.state.CD.package.colums2} dataSource={this.state.CD.package.data2} scroll={{ x: 1300 }} />*/}
-                    {/*/!*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*!/*/}
-                    {/*</Row>*/}
-                    {/*<Divider />*/}
+                    <Row className="table-text">Table Two(class/package):</Row>
+                    <Row className="table-flow">
+                    <Table columns={this.state.CD.class.colums2} dataSource={this.state.CD.class.data2} scroll={{ x: 1300 }} />
+                    {/*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*/}
+                    </Row>
+                    <Divider />
+                    <Row className="cd-text">package : </Row>
+                    <Row className="table-text">Table One(以cycle作为行以class/package作为列):</Row>
+                    <Row className="table-flow">
+                    <Table columns={this.state.CD.package.colums1} dataSource={this.state.CD.package.data1} scroll={{ x: 1300 }} />
+                    {/*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*/}
+                    </Row>
+                    <Divider />
+                    <Row className="table-text">Table Two(class/package):</Row>
+                    <Row className="table-flow">
+                    <Table columns={this.state.CD.package.colums2} dataSource={this.state.CD.package.data2} scroll={{ x: 1300 }} />
+                    {/*<Table columns={CD.class.colums1} dataSource={CD.class.data1} scroll={{ x: 1300 }} />*/}
+                    </Row>
+                    <Divider />
                 </div>
             };
         }else{

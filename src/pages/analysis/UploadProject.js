@@ -202,7 +202,7 @@ class UploadProject extends React.Component {
                 return false;
             },
             fileList,
-            accept: '.zip',
+            accept: '.zip, .jar',
             multiple: false,
         };
         let TopButton = null;

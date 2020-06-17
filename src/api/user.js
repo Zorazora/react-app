@@ -45,3 +45,10 @@ export function getAvatarPath(userId) {
         method: 'get'
     })
 }
+
+export function getUserByUserId(userId) {
+    return axios({
+        url: `/login/getUserByUserId/${userId}`,
+        method: 'get'
+    })
+}
