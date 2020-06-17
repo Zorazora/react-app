@@ -14,7 +14,6 @@ class UserCenter extends React.Component {
             loading: false,
             avatarPath : '',
             data : [],
-            WebAppConfigBase: '/Users/zhuyuxin/arcan/avatar',
             user: {}
         };
     }
@@ -22,7 +21,7 @@ class UserCenter extends React.Component {
     async componentDidMount() {
         this.getUserByUserId();
         this.getRepositoryList();
-        this.getAvatarPath();
+        // this.getAvatarPath();
     };
 
     getRepositoryList() {
@@ -39,11 +38,12 @@ class UserCenter extends React.Component {
         getAvatarPath(this.props.user.token).then(res => {
             console.log(res.data)
             if(this.state.user.avatar !== null){
-                console.log("okk")
+                console.log("ok")
                 this.setState({
                     // avatarPath: require("/Users/zhuyuxin/arcan/avatar"+res.data.avatarPath)
-                    // avatarPath: require(this.state.WebAppConfigBase+res.data.avatarPath)
-                    avatarPath: require("/Users/zhuyuxin/arcan/avatar/8a6b61eef63d4a5d96eb449de4857af0/u=3484334960,3948950267&fm=27&gp=0.jpg")
+
+                    // avatarPath: require("../../images"+res.data.avatarPath)
+                    avatarPath: require("../../images/8a6b61eef63d4a5d96eb449de4857af0/u=427719793,2046993105&fm=27&gp=0.jpg")
                 })
             }
         });
@@ -52,10 +52,19 @@ class UserCenter extends React.Component {
     getUserByUserId(){
         console.log("getUserByUserId")
         getUserByUserId(this.props.user.token).then(res => {
+            console.log("res.data")
             console.log(res.data)
             this.setState({
                 user: res.data.user
             })
+            if(res.data.user.avatar !== null){
+                getAvatarPath(this.props.user.token).then(res1 => {
+                    console.log("res1.data")
+                    this.setState({
+                        avatarPath: require("../../images"+res1.data.avatarPath)
+                    })
+                });
+            }
         });
     }
 
@@ -64,7 +73,7 @@ class UserCenter extends React.Component {
     }
 
     render() {
-        const { user } = this.props;
+        const { user } = this.state;
 
         const IconFont = Icon.createFromIconfontCN({
             scriptUrl: '//at.alicdn.com/t/font_1805017_d3im7hiwj18.js',
