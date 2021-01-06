@@ -49,7 +49,7 @@
     ]
   },
   "devDependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "webpack": "^4.41.2"
   },
   "proxy": "http://localhost:8088"
